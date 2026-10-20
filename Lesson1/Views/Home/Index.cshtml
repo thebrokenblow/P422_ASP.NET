@@ -1,0 +1,57 @@
+﻿@{
+    var numbers = new List<int>();
+    numbers.Add(1);
+    numbers.Add(2);
+    numbers.Add(3);
+
+    for (int i = 4; i <= 1000; i++)
+    {
+        numbers.Add(i);
+    }
+
+    var firstName = "Artem";
+    var lastName = "Krasov";
+}
+
+@functions 
+{
+    public bool IsPrime(int number)
+    {
+        if (number <= 1) 
+        {
+            return false;
+        }
+
+        if (number == 2)
+        { 
+            return true;
+        }
+
+        if (number % 2 == 0)
+        { 
+            return false;
+        }
+
+        long limit = (long)Math.Sqrt(number);
+        for (long i = 3; i <= limit; i += 2)
+        {
+            if (number % i == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+@foreach (var number in numbers)
+{
+    @if (IsPrime(number))
+    {
+        <p>@number Число простое</p>
+    }
+}
+
+<h1>@firstName</h1>
+<h1>@lastName</h1>
