@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="DiContainer/DiContainer.csproj" Id="6a5fa1c3-1d32-4273-8f7d-8eb85cab9f90" />
   <Project Path="Lesson1/Lesson1.csproj" />
+  <Project Path="Lesson2/Lesson2.csproj" Id="8c6fea8c-148c-47ef-9e78-f90b47a8740f" />
 </Solution>
