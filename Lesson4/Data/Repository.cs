@@ -4,7 +4,7 @@ namespace Lesson4.Data;
 
 public class Repository
 {
-    private List<Cat> cats;
+    private static List<Cat> cats;
     private static List<int> favoriteCats = new();
 
 
@@ -105,6 +105,15 @@ public class Repository
         var isFavorite = favoriteCats.Any(x => x == id);
 
         return isFavorite;
+    }
+
+    public void Add(Cat cat)
+    {
+        var id = cats.Max(x => x.Id);
+
+        cat.Id = ++id;
+
+        cats.Add(cat);
     }
 
     public void AddFavorite(int id)

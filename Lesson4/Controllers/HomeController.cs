@@ -1,12 +1,13 @@
 using Lesson4.Data;
 using Lesson4.Models;
+using Lesson4.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lesson4.Controllers;
 
 public class HomeController : Controller
 {
-    private static Repository _repository;
+    private Repository _repository;
 
     public HomeController(Repository repository)
     {
@@ -32,6 +33,48 @@ public class HomeController : Controller
         };
 
         return View(favoriteCatPage);
+    }
+
+    [HttpGet]
+    public IActionResult Add()
+    {
+        var addCatPage = new AddCatPage
+        {
+            Cat = new Cat(),
+            ValidationAddCat = new ValidationAddCat()
+        };
+        
+        return View(addCatPage);
+    }
+
+    [HttpPost]
+    public IActionResult Add(Cat cat)
+    {
+        var addCatPage = new AddCatPage
+        {
+            Cat = cat,
+            ValidationAddCat = new ValidationAddCat()
+        };
+
+        if (cat.Age < 0)
+        {
+            addCatPage.ValidationAddCat.IncorrectAge = "Возраст не может быть меньше 0";
+        }
+
+        if (cat.Name.Length > 300)
+        {
+            addCatPage.ValidationAddCat.IncorrectName = "Имя котика не может быть свыше 300 символов";
+        }
+
+        if (addCatPage.ValidationAddCat.IncorrectName?.Length > 0 || 
+            addCatPage.ValidationAddCat.IncorrectAge?.Length > 0)
+        {
+            return View(addCatPage);
+        }
+
+        _repository.Add(cat);
+
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult AddFavorite(int id)

@@ -3,7 +3,7 @@ using Lesson4.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<Repository>();
+builder.Services.AddSingleton<Repository>();
 
 var app = builder.Build();
 
