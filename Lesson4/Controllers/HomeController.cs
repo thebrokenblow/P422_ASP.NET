@@ -47,6 +47,38 @@ public class HomeController : Controller
         return View(addCatPage);
     }
 
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        var cat = _repository.GetById(id);
+
+        return View(cat);
+    }
+
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var cat = _repository.GetById(id);
+
+        return View(cat);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Cat cat)
+    {
+        _repository.Update(cat);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public IActionResult ConfirmDelete(int id)
+    {
+        _repository.Remove(id);
+
+        return RedirectToAction(nameof(Index));
+    }
+
     [HttpPost]
     public IActionResult Add(Cat cat)
     {

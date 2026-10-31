@@ -125,4 +125,21 @@ public class Repository
     {
         favoriteCats.Remove(id);
     }
+
+    public void Remove(int id)
+    {
+        var cat = cats.First(x => x.Id == id);
+        cats.Remove(cat);
+    }
+
+    public void Update(Cat cat)
+    {
+        var updatingCat = cats.First(x => x.Id == cat.Id);
+
+        updatingCat.Name = cat.Name;
+        updatingCat.Description = cat.Description;
+        updatingCat.Age = cat.Age;
+        updatingCat.UrlPhoto = cat.UrlPhoto;
+        updatingCat.Color = cat.Color;
+    }
 }
