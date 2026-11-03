@@ -2,11 +2,12 @@
 
 namespace Lesson4.Data;
 
-public class Repository
+public class Repository : IRepository
 {
     private static List<Cat> cats;
     private static List<int> favoriteCats = new();
 
+    private readonly CatDbContext _catDbContext;
 
     public Repository()
     {
@@ -109,6 +110,10 @@ public class Repository
 
     public void Add(Cat cat)
     {
+        //insert 
+        _catDbContext.Remove(cat);
+        _catDbContext.SaveChanges();
+
         var id = cats.Max(x => x.Id);
 
         cat.Id = ++id;

@@ -7,9 +7,9 @@ namespace Lesson4.Controllers;
 
 public class HomeController : Controller
 {
-    private Repository _repository;
+    private IRepository _repository;
 
-    public HomeController(Repository repository)
+    public HomeController(IRepository repository)
     {
         _repository = repository;
     }
@@ -25,6 +25,12 @@ public class HomeController : Controller
     {
         var isFavorite = _repository.IsFavorite(id);
         var cat = _repository.GetById(id);
+
+        if (cat == null)
+        {
+            //HTTP -> 404 
+            return NotFound();    
+        }
 
         var favoriteCatPage = new FavoriteCatPage
         {

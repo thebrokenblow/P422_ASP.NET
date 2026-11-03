@@ -1,9 +1,16 @@
 using Lesson4.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<Repository>();
+
+string connection = builder.Configuration.GetConnectionString("PetsDb");
+
+builder.Services.AddDbContext<CatDbContext>(options =>
+    options.UseNpgsql(connection));
+
+builder.Services.AddTransient<IRepository, DbRepository>();
 
 var app = builder.Build();
 
