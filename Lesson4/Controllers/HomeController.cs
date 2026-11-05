@@ -14,11 +14,23 @@ public class HomeController : Controller
         _repository = repository;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(IndexModel<Cat>? indexModel = null)
     {
-        var cats = _repository.GetAll();
+        List<Cat>? cats;
+        
+        if (indexModel != null && !string.IsNullOrEmpty(indexModel.SearchString))
+        {
+            indexModel.SearchString = indexModel.SearchString.Trim();
+            cats = _repository.Filtered(indexModel.SearchString);
+        }
+        else
+        {
+            cats = _repository.GetAll();
+        }
 
-        return View(cats);
+        indexModel.Pets = cats;
+
+        return View(indexModel);
     }
 
     public IActionResult Details(int id)

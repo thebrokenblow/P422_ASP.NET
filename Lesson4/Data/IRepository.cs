@@ -19,4 +19,5 @@ public interface IRepository
     void Remove(int id);
 
     void Update(Cat cat);
+    List<Cat>? Filtered(string nameCat);
 }

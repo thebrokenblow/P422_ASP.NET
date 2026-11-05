@@ -147,4 +147,9 @@ public class Repository : IRepository
         updatingCat.UrlPhoto = cat.UrlPhoto;
         updatingCat.Color = cat.Color;
     }
+
+    public List<Cat>? Filtered(string nameCat)
+    {
+        return [];
+    }
 }

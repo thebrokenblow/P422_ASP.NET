@@ -66,4 +66,11 @@ public class DbRepository : IRepository
 
         _catDbContext.SaveChanges();
     }
+
+    public List<Cat>? Filtered(string nameCat)
+    {
+        var cats = _catDbContext.Cats.Where(cat => cat.Name.ToLower().Contains(nameCat.ToLower())).ToList();
+
+        return cats;
+    }
 }
