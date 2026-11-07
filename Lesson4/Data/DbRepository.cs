@@ -1,4 +1,5 @@
 ﻿using Lesson4.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lesson4.Data;
 
@@ -11,9 +12,9 @@ public class DbRepository : IRepository
         _catDbContext = catDbContext;
     }
 
-    public List<Cat> GetAll()
+    public async Task<List<Cat>> GetAllAsync(int countSkip, int countTake)
     {
-        return _catDbContext.Cats.ToList();
+        return await _catDbContext.Cats.Skip(countSkip).Take(countTake).ToListAsync();
     }
 
     public Cat? GetById(int id)
@@ -67,10 +68,21 @@ public class DbRepository : IRepository
         _catDbContext.SaveChanges();
     }
 
-    public List<Cat>? Filtered(string nameCat)
+    public List<Cat>? Filtered(string nameCat, int countSkip, int countTake)
     {
-        var cats = _catDbContext.Cats.Where(cat => cat.Name.ToLower().Contains(nameCat.ToLower())).ToList();
+        var cats = _catDbContext.Cats.Where(cat => cat.Name.ToLower().Contains(nameCat.ToLower()));
+        cats = cats.Skip(countSkip).Take(countTake);
 
-        return cats;
+        return cats.ToList();
+    }
+
+    public int GetCount(string searchString)
+    {
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            return _catDbContext.Cats.Where(cat => cat.Name.ToLower().Contains(searchString.ToLower())).Count();
+        }
+
+        return _catDbContext.Cats.Count();
     }
 }

@@ -4,7 +4,7 @@ namespace Lesson4.Data;
 
 public interface IRepository
 {
-    List<Cat> GetAll();
+    List<Cat> GetAllAsync(int countSkip, int countTake);
 
     Cat? GetById(int id);
 
@@ -19,5 +19,8 @@ public interface IRepository
     void Remove(int id);
 
     void Update(Cat cat);
-    List<Cat>? Filtered(string nameCat);
+
+    List<Cat>? Filtered(string nameCat, int countSkip, int countTake);
+
+    int GetCount(string searchString);
 }

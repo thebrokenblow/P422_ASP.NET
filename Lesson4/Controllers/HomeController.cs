@@ -14,23 +14,43 @@ public class HomeController : Controller
         _repository = repository;
     }
 
-    public IActionResult Index(IndexModel<Cat>? indexModel = null)
+    private const int CountElementsOnPage = 20;
+
+    public async Task<IActionResult> Index(RequestIndexModel indexModel)
     {
-        List<Cat>? cats;
-        
-        if (indexModel != null && !string.IsNullOrEmpty(indexModel.SearchString))
+        if (indexModel?.SearchString != null)
         {
             indexModel.SearchString = indexModel.SearchString.Trim();
-            cats = _repository.Filtered(indexModel.SearchString);
+        }
+
+        var allCounteElementsOnPage = _repository.GetCount(indexModel.SearchString);
+
+        var responceIndexModel = new ResponceIndexModel<Cat>(
+            indexModel.SearchString,
+            indexModel.Page,
+            allCounteElementsOnPage,
+            CountElementsOnPage);
+
+        if (indexModel.Page > responceIndexModel.TotalPages || indexModel.Page < 1)
+        {
+            return NotFound();
+        }
+
+        var countSkip = CountElementsOnPage * (responceIndexModel.CurrentPage - 1);
+
+        List<Cat>? cats;
+        if (indexModel != null && !string.IsNullOrEmpty(indexModel.SearchString))
+        {
+            cats = _repository.Filtered(indexModel.SearchString, countSkip, CountElementsOnPage);
         }
         else
         {
-            cats = _repository.GetAll();
+            cats = _repository.GetAllAsync(countSkip, CountElementsOnPage);
         }
 
-        indexModel.Pets = cats;
+        responceIndexModel.Pets = cats;
 
-        return View(indexModel);
+        return View(responceIndexModel);
     }
 
     public IActionResult Details(int id)
