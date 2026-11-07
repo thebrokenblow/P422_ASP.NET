@@ -73,9 +73,4 @@ public class DbRepository : IRepository
 
         return cats;
     }
-
-    public int GetCount()
-    {
-        return 0;
-    }
 }

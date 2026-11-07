@@ -1,14 +1,9 @@
 ﻿@model IndexModel<Cat>
 
-@{
-    Model.Page = 1;
-}
-
 <div class="container">
 
     <form asp-controller="Home" asp-action="Index" method="get">
         <div class="input-group mb-3">
-            <input type="hidden" asp-for="Page"/>
             <input type="text" asp-for="SearchString" class="form-control" placeholder="Введите имя: " aria-label="Введите имя: " aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="submit">Поиск</button>
@@ -37,11 +32,6 @@
                     </div>
                 </div>
             }
-        </div>
-
-        <div class="d-flex justify-content-between" style="width: 100px;">
-            <a asp-controller="Home" asp-action="Index" asp-route-searchString="@Model.SearchString" asp-route-page="@(Model.Page - 1)" class="btn btn-primary mt-auto">&#8592;</a>
-            <a asp-controller="Home" asp-action="Index" asp-route-searchString="@Model.SearchString" asp-route-page="@(Model.Page + 1)" class="btn btn-primary mt-auto">&#10142;</a>
         </div>
     }
     else
