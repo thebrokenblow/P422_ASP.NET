@@ -9,6 +9,9 @@ public class HomeController : Controller
 {
     private IRepository _repository;
 
+
+    private const int countObjectOnPage = 2;
+    
     public HomeController(IRepository repository)
     {
         _repository = repository;
@@ -16,19 +19,29 @@ public class HomeController : Controller
 
     public IActionResult Index(IndexModel<Cat>? indexModel = null)
     {
-        List<Cat>? cats;
-        
-        if (indexModel != null && !string.IsNullOrEmpty(indexModel.SearchString))
-        {
-            indexModel.SearchString = indexModel.SearchString.Trim();
-            cats = _repository.Filtered(indexModel.SearchString);
-        }
-        else
-        {
-            cats = _repository.GetAll();
-        }
+        //List<Cat>? cats;
 
-        indexModel.Pets = cats;
+        //var count = _repository.GetCount();
+
+        ////var responceIndexModel = new IndexModel<Cat>(count, countObjectOnPage)
+        ////{
+        ////    SearchString = indexModel.SearchString,
+        ////    Page = indexModel.Page,
+        ////    Pets = null
+        ////};
+
+        //if (indexModel != null && !string.IsNullOrEmpty(indexModel.SearchString))
+        //{
+        //    indexModel.SearchString = indexModel.SearchString.Trim();
+        //    cats = _repository.Filtered(indexModel.SearchString);
+        //}
+        //else
+        //{
+        //    cats = _repository.GetAll();
+        //}
+
+        //indexModel.Pets = cats;
+        ////responceIndexModel.Pets = cats;
 
         return View(indexModel);
     }
@@ -140,4 +153,72 @@ public class HomeController : Controller
 
         return RedirectToAction(nameof(Details), new { id });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Необзодимо распарсить строку таким образом чтобы между числами стояли числа в этом промежутке
+
+    //List<string> { "2-3", "5", "7-13" } => List<string> { "1", "2", "3", "5", "7", "8" ... "13"}
+
+    //C#
+
 }

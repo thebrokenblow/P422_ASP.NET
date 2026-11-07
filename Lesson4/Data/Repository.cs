@@ -152,4 +152,11 @@ public class Repository : IRepository
     {
         return [];
     }
+
+    public int GetCount()
+    {
+        var count = cats.Count();
+
+        return count;
+    }
 }

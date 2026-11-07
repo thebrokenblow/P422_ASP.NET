@@ -20,4 +20,5 @@ public interface IRepository
 
     void Update(Cat cat);
     List<Cat>? Filtered(string nameCat);
+    int GetCount();
 }
