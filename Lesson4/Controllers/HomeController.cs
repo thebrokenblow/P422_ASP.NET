@@ -45,7 +45,7 @@ public class HomeController : Controller
         }
         else
         {
-            cats = _repository.GetAllAsync(countSkip, CountElementsOnPage);
+            cats = await _repository.GetAllAsync(countSkip, CountElementsOnPage);
         }
 
         responceIndexModel.Pets = cats;

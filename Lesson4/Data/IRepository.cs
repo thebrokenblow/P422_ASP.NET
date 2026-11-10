@@ -4,7 +4,7 @@ namespace Lesson4.Data;
 
 public interface IRepository
 {
-    List<Cat> GetAllAsync(int countSkip, int countTake);
+    Task<List<Cat>> GetAllAsync(int countSkip, int countTake);
 
     Cat? GetById(int id);
 
