@@ -22,5 +22,5 @@ public interface IRepository
 
     List<Cat>? Filtered(string nameCat, int countSkip, int countTake);
 
-    int GetCount(string searchString);
+    Task<int> GetCountAsync(string searchString);
 }

@@ -76,13 +76,13 @@ public class DbRepository : IRepository
         return cats.ToList();
     }
 
-    public int GetCount(string searchString)
+    public async Task<int> GetCountAsync(string searchString)
     {
         if (!string.IsNullOrEmpty(searchString))
         {
-            return _catDbContext.Cats.Where(cat => cat.Name.ToLower().Contains(searchString.ToLower())).Count();
+            return await _catDbContext.Cats.Where(cat => cat.Name.ToLower().Contains(searchString.ToLower())).CountAsync();
         }
 
-        return _catDbContext.Cats.Count();
+        return await _catDbContext.Cats.CountAsync();
     }
 }
