@@ -1,7 +1,7 @@
 ﻿@model ResponceIndexModel<Cat>
 
 @{
-    int windowSize = 3;
+    int windowSize = 2;
     int startPage = Math.Max(1, Model.CurrentPage - windowSize);
     int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + windowSize);
 }
@@ -95,25 +95,35 @@
     <script>
         document.addEventListener('keydown', function (event) {
 
-            console.log('[1] Скрипт загружен');
-
             if (event.target.tagName.toLowerCase() === 'input') {
                 return;
             }
 
             if (event.key === 'ArrowLeft') {
+                console.log(1);
                 const prevItem = document.querySelector('.pagination .page-item:first-child');
                 if (prevItem && !prevItem.classList.contains('disabled')) {
                     const link = prevItem.querySelector('a');
                     if (link) link.click();
                 }
             } else if (event.key === 'ArrowRight') {
+                console.log(2);
+
                 const nextItem = document.querySelector('.pagination .page-item:last-child');
                 if (nextItem && !nextItem.classList.contains('disabled')) {
                     const link = nextItem.querySelector('a');
                     if (link) link.click();
                 }
             }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentUrl = window.location.href;
+        
+            if (currentUrl.split('?')[1].split('=')[0] === 'page') {
+              window.scrollTo(0, document.body.scrollHeight);
+            }
+        
         });
     </script>
 }

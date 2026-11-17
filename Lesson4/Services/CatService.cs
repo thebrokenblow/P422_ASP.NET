@@ -23,16 +23,17 @@ public class CatService(IRepository _repository)
 
         ValidatePageNumber(indexModel, responceIndexModel);
 
-        var countSkip = CountElementsOnPage * (responceIndexModel.CurrentPage - 1);
+        var countSkip = 0;
+        var countTake = CountElementsOnPage * indexModel.Page;
 
         List<Cat>? cats;
         if (indexModel != null && !string.IsNullOrEmpty(indexModel.SearchString))
         {
-            cats = _repository.Filtered(indexModel.SearchString, countSkip, CountElementsOnPage);
+            cats = _repository.Filtered(indexModel.SearchString, countSkip, countTake);
         }
         else
         {
-            cats = await _repository.GetAllAsync(countSkip, CountElementsOnPage);
+            cats = await _repository.GetAllAsync(countSkip, countTake);
         }
 
         responceIndexModel.Pets = cats;

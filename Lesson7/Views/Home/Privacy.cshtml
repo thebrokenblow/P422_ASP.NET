@@ -1,6 +1,13 @@
-﻿@{
+﻿@model List<Person>
+
+@{
     ViewData["Title"] = "Privacy Policy";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
+    @foreach (var person in Model)
+    {
+        <vc:card-person person="@person" controller-name="Home" action-name="Details" />
+    }
+</div>
