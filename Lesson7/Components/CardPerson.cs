@@ -1,6 +1,5 @@
 ﻿using Lesson7.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 
 namespace Lesson7.Components;
 

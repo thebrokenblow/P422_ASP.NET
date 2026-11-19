@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="ConsoleClient/ConsoleClient.csproj" Id="8ff4249f-d2dd-48ab-8805-3f23f3137be9" />
   <Project Path="DiContainer/DiContainer.csproj" Id="6a5fa1c3-1d32-4273-8f7d-8eb85cab9f90" />
   <Project Path="Lesson1/Lesson1.csproj" />
   <Project Path="Lesson2/Lesson2.csproj" Id="8c6fea8c-148c-47ef-9e78-f90b47a8740f" />
@@ -7,5 +8,6 @@
   <Project Path="Lesson5/Lesson5.csproj" Id="a46b53c2-b041-48af-9eeb-87d5eb8600a8" />
   <Project Path="Lesson6/Lesson6.csproj" Id="20f08a72-e66f-414c-aef5-e40bff5a9316" />
   <Project Path="Lesson7/Lesson7.csproj" Id="5aee3500-88fb-41ce-95f5-1a6d81be4081" />
+  <Project Path="Lesson8/Lesson8.csproj" Id="f7f45413-c7f8-4c17-846e-74bed296c4f6" />
   <Project Path="UnitTests/UnitTests.csproj" Id="5653bed1-93d1-475c-9d67-104badc46029" />
 </Solution>
