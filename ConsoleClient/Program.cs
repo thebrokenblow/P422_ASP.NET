@@ -4,6 +4,8 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+Console.ReadLine();
+
 //var httpClient = new HttpClient();
 //var responce = await httpClient.GetAsync("https://localhost:7273/Product");
 
