@@ -1,13 +1,14 @@
-using Lesson8.Data;
+using Lesson8.Exceptions;
 using Lesson8.Model;
+using Lesson8.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lesson8.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductController(StoreDbContext context) : ControllerBase
+//Обрабатывает запросы 
+public class ProductController(IProductRepository productRepository) : ControllerBase
 {
     /// <summary>
     /// HTTP Какие виды запросов? POST, GET, DELETE, PUT
@@ -27,61 +28,76 @@ public class ProductController(StoreDbContext context) : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Product>> GetAll()
     {
-        return await context.Products.ToListAsync();
+        return await productRepository.GetAllAsync();
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Product>> GetById(Guid id)
     {
-        var product = await context.Products.FirstOrDefaultAsync(product => product.Id == id);
-
-        if (product == null)
+        try
+        {
+            return await productRepository.GetByIdAsync(id);
+        }
+        catch (NotFoundException ex)
         {
             return NotFound();
         }
-
-        return product;
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
     }
 
     [HttpPost]
     public async Task<ActionResult> Create(Product product)
-    {
-        //Валидация
+    {   
+        try
+        {
+            await productRepository.CreateAsync(product);
+        }
+        catch (Exception ex)
+        {
+            
+        }
 
-        //return BadRequest();
+        
         return Created();
-
-        await context.AddAsync(product);
-        await context.SaveChangesAsync();
     }
 
     [HttpPut]
-    public void Update(Product product)
+    public async Task<ActionResult> Update(Product product)
     {
-        //Валидация
+        try
+        {
+            await productRepository.UpdateAsync(product);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
 
-        //return BadRequest();
-        var updatingProduct = context.Products.Where(product => product.Id == product.Id).First();
+        }
 
-        updatingProduct.Name = product.Name;
-        updatingProduct.Description = product.Description;
-        updatingProduct.Price = product.Price;
-
-        //return Ok();
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> Remove(Guid id)
     {
-        var product = await context.Products.FirstOrDefaultAsync(product => product.Id == id);
-
-        if (product == null)
+        try
+        {
+            await productRepository.RemoveAsync(id);
+        }
+        catch (NotFoundException ex)
         {
             return NotFound();
         }
+        catch (Exception ex)
+        {
 
-        context.Remove(product);
-        await context.SaveChangesAsync();
+        }
 
         return NoContent();
     }
