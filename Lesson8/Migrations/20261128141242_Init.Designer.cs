@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lesson8.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20261121154318_ChangeAtributes")]
-    partial class ChangeAtributes
+    [Migration("20261128141242_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,8 @@ namespace Lesson8.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")

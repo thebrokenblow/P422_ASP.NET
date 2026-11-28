@@ -2,101 +2,142 @@ using Lesson8.Exceptions;
 using Lesson8.Model;
 using Lesson8.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace Lesson8.Controllers;
 
+/// <summary>
+/// Контроллер для управления товарами.
+/// Предоставляет REST API для CRUD-операций над сущностью <see cref="Product"/>.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
-//Обрабатывает запросы 
+[Produces(MediaTypeNames.Application.Json)]
 public class ProductController(IProductRepository productRepository) : ControllerBase
 {
     /// <summary>
-    /// HTTP Какие виды запросов? POST, GET, DELETE, PUT
-    /// (200) - Запрос был успешен (оперции чтения), Обновлении
-    /// (201) - По запросу успешно создан ресурс
-    /// (204) - При удалении 
-    /// 
-    /// 404 - Ресурс не был найден (когда объекта не будет в бд)
-    /// 400 - Bad Request 
-    /// 
-    /// POST - создание ресурса на сервере (запись в бд)
-    /// GET - получение данных из бд / файла
-    /// DELETE - удаление данных
-    /// PUT - обновление данных
+    /// Получить список всех товаров.
     /// </summary>
-    /// <returns></returns>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///     GET /Product
+    ///
+    /// </remarks>
+    /// <returns>Коллекция всех товаров.</returns>
+    /// <response code="200">Список товаров успешно получен.</response>
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     public async Task<IEnumerable<Product>> GetAll()
     {
         return await productRepository.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
+    /// <summary>
+    /// Получить товар по его идентификатору.
+    /// </summary>
+    /// <param name="id">Уникальный идентификатор (GUID) товара.</param>
+    /// <returns>Найденный товар.</returns>
+    /// <response code="200">Товар найден и возвращён.</response>
+    /// <response code="404">Товар с указанным идентификатором не найден.</response>
+    /// <response code="400">Некорректный запрос.</response>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Product>> GetById(Guid id)
     {
         try
         {
             return await productRepository.GetByIdAsync(id);
         }
-        catch (NotFoundException ex)
+        catch (NotFoundException)
         {
             return NotFound();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return BadRequest();
         }
     }
 
+    /// <summary>
+    /// Создать новый товар.
+    /// </summary>
+    /// <param name="product">Данные создаваемого товара.</param>
+    /// <returns>Результат операции создания.</returns>
+    /// <response code="201">Товар успешно создан.</response>
+    /// <response code="400">Некорректные данные товара.</response>
     [HttpPost]
-    public async Task<ActionResult> Create(Product product)
-    {   
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> Create([FromBody] Product product)
+    {
         try
         {
             await productRepository.CreateAsync(product);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            
+            return BadRequest();
         }
 
-        
         return Created();
     }
 
+    /// <summary>
+    /// Обновить существующий товар.
+    /// </summary>
+    /// <param name="product">Товар с обновлёнными данными (должен содержать существующий Id).</param>
+    /// <returns>Результат операции обновления.</returns>
+    /// <response code="204">Товар успешно обновлён.</response>
+    /// <response code="404">Товар с указанным идентификатором не найден.</response>
     [HttpPut]
-    public async Task<ActionResult> Update(Product product)
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> Update([FromBody] Product product)
     {
         try
         {
             await productRepository.UpdateAsync(product);
         }
-        catch (NotFoundException ex)
+        catch (NotFoundException)
         {
             return NotFound();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-
+            return BadRequest();
         }
 
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    /// <summary>
+    /// Удалить товар по идентификатору.
+    /// </summary>
+    /// <param name="id">Уникальный идентификатор (GUID) товара.</param>
+    /// <returns>Результат операции удаления.</returns>
+    /// <response code="204">Товар успешно удалён.</response>
+    /// <response code="404">Товар с указанным идентификатором не найден.</response>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> Remove(Guid id)
     {
         try
         {
             await productRepository.RemoveAsync(id);
         }
-        catch (NotFoundException ex)
+        catch (NotFoundException)
         {
             return NotFound();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-
+            return BadRequest();
         }
 
         return NoContent();
